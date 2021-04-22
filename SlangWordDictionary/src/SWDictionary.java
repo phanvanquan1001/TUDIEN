@@ -12,9 +12,6 @@ import java.util.Scanner;
 
 import javax.print.attribute.standard.Media;
 
-import org.graalvm.compiler.nodes.PauseNode;
-
-import jdk.internal.jshell.tool.resources.version;
 
 public class SWDictionary {
 
@@ -29,7 +26,7 @@ public class SWDictionary {
     }
 
     public static HashMap<String,List<String>> m=new HashMap<String,List<String>>();
-    public static List<String> lichsuSlangWord=new ArrayList()
+    public static List<String> lichsuSlangWord=new ArrayList();
     public static Scanner word=new Scanner(System.in);
 
     public static void GetLichsu()
@@ -90,7 +87,7 @@ public class SWDictionary {
         lichsuSlangWord.add(check);
         System.out.println(test);
         pauseScreen();
-        Menu();
+        menu();
     }
 
     //Tìm kiếm theo Definition
@@ -110,7 +107,7 @@ public class SWDictionary {
         }
         System.out.println(answer);
         pauseScreen();
-        Menu();
+        menu();
     }
     
 
@@ -121,7 +118,7 @@ public class SWDictionary {
         System.out.println("Lịch Sử Tìm Kiếm: ");
         for (String temp: lichsuSlangWord )
         {
-            System.out.ptintln(temp);
+            System.out.println(temp);
         }
         pauseScreen();
         menu();
@@ -147,7 +144,7 @@ public class SWDictionary {
             else
             {
                 List<String> i=m.get(check);
-                for(String j=i)
+                for(String j:i)
                 {
                     t.add(j);
                 }
@@ -174,7 +171,7 @@ public class SWDictionary {
         {
             System.out.println("SlangWord không tồn tại.");
             pauseScreen();
-            Menu();
+            menu();
 
         }
         clearScreen();
@@ -208,7 +205,7 @@ public class SWDictionary {
             System.out.println("Nhập Definition mới: ");
             String temp=word.nextLine();
             rshowCase.add(temp);
-            m.put(check, rshowCase)
+            m.put(check, rshowCase);
 
         }
         else if(chon==2)
@@ -217,7 +214,7 @@ public class SWDictionary {
             {
                 System.out.println("Không thể xóa");
                 pauseScreen();
-                Menu();
+                menu();
 
             }
             rshowCase.remove(index-1);
@@ -226,15 +223,33 @@ public class SWDictionary {
         else if(chon==3)
         {
             System.out.println("Nhập Definition mới: ");
-            String temp=word.hasNextLine();
+            String temp=word.nextLine();
             rshowCase.add(temp);
             m.put(check, rshowCase);
 
         }
-        Menu();
+        menu();
 
     }
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+
+    //menu
+    public static void menu()
+    {
+        clearScreen();
+        System.out.println("***********MENU************** ");
+        System.out.println("1. Tìm kiếm theo SlangWord: *");
+        int chon=word.nextInt();
+        String pass=word.nextLine();
+        if(chon==1) TimkiemSlangWord();
+        else
+        {
+            clearScreen();
+            System.exit(0);
+        }
+    }
+    public static void main(String[] args)  {
+        GetData();
+        GetLichsu();
+        menu();
     }
 }
