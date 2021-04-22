@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.print.attribute.standard.Media;
+
+import org.graalvm.compiler.nodes.PauseNode;
+
 import jdk.internal.jshell.tool.resources.version;
 
 public class SWDictionary {
@@ -108,7 +112,128 @@ public class SWDictionary {
         pauseScreen();
         Menu();
     }
+    
 
+    //Tìm kiếm lịch sử
+ static void Hienthilichsu()
+    {
+        clearScreen();
+        System.out.println("Lịch Sử Tìm Kiếm: ");
+        for (String temp: lichsuSlangWord )
+        {
+            System.out.ptintln(temp);
+        }
+        pauseScreen();
+        menu();
+    }
+    
+    //Thêm SlangWord
+
+    public static void ThemSlangWord()
+    {
+        clearScreen();
+        System.out.println("Vui lòng nhập SlangWord: ");
+        String check = word.nextLine();
+        check=check.toUpperCase();
+        System.out.println("Nhập definition: ");
+        String check0=word.nextLine();
+        List<String> t=new ArrayList<>();
+        t.add(check0);
+        if(m.containsKey(check))
+        {
+            System.out.println("Overwrite: (Y/N)");
+            String confirm=word.nextLine();
+            if(confirm.equals("Y")|| confirm.equals("y")) m.put(check,t);
+            else
+            {
+                List<String> i=m.get(check);
+                for(String j=i)
+                {
+                    t.add(j);
+                }
+                m.put(check, t);
+            }
+        }
+        else
+        {
+            m.put(check, t);
+            System.out.println("Thêm SlangWord thành công");
+        }
+        menu();
+    }
+
+
+    //Sửa SlangWord
+    public static void SuaSlangWord()
+    {
+        clearScreen();
+        System.out.println("Nhập SlangWord muốn sửa: ");
+        String check=word.nextLine();
+        check=check.toUpperCase();
+        if(!m.containsKey(check))
+        {
+            System.out.println("SlangWord không tồn tại.");
+            pauseScreen();
+            Menu();
+
+        }
+        clearScreen();
+        System.out.println("Nhập Definition: ");
+        List<String> showCase=m.get(check);
+        List<String> rshowCase=new ArrayList<>();
+        for(String i:showCase)
+        {
+            rshowCase.add(i);
+        }
+        int count=1;
+        for(String i: showCase)
+        {
+            System.out.println(count+"." + i);
+            count++;
+        }
+        System.out.println("Từ bạn muốn thay đổi: ");
+        int index=word.nextInt();
+        clearScreen();
+
+        System.out.println("Bạn muốn: ");
+        System.out.println("1. Ghi đè Definition ");
+        System.out.println("2. Xóa Definition ");
+        System.out.println("3. Thêm Definition ");
+        System.out.println("Tôi muốn: ");
+        int chon=word.nextInt();
+        String pass=word.nextLine();
+        if(chon==1)
+        {
+            rshowCase.remove(index-1);
+            System.out.println("Nhập Definition mới: ");
+            String temp=word.nextLine();
+            rshowCase.add(temp);
+            m.put(check, rshowCase)
+
+        }
+        else if(chon==2)
+        {
+            if(rshowCase.size()==1)
+            {
+                System.out.println("Không thể xóa");
+                pauseScreen();
+                Menu();
+
+            }
+            rshowCase.remove(index-1);
+            m.put(check,rshowCase);
+        }
+        else if(chon==3)
+        {
+            System.out.println("Nhập Definition mới: ");
+            String temp=word.hasNextLine();
+            rshowCase.add(temp);
+            m.put(check, rshowCase);
+
+        }
+        Menu();
+
+    }
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
     }
