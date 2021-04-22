@@ -111,7 +111,7 @@ public class SWDictionary {
     }
     
 
-    //Tìm kiếm lịch sử
+    //Hiển thị lịch sử tìm kiếm
  static void Hienthilichsu()
     {
         clearScreen();
@@ -196,6 +196,7 @@ public class SWDictionary {
         System.out.println("1. Ghi đè Definition ");
         System.out.println("2. Xóa Definition ");
         System.out.println("3. Thêm Definition ");
+        
         System.out.println("Tôi muốn: ");
         int chon=word.nextInt();
         String pass=word.nextLine();
@@ -236,11 +237,20 @@ public class SWDictionary {
     public static void menu()
     {
         clearScreen();
-        System.out.println("***********MENU************** ");
-        System.out.println("1. Tìm kiếm theo SlangWord: *");
+        System.out.println("***************MENU***************** ");
+        System.out.println("1. Tìm kiếm theo SlangWord:        *");
+        System.out.println("2. Tìm kiếm theo Definition:       * ");
+        System.out.println("3. Lịch sử tìm kiếm:               * ");
+        System.out.println("4. Thêm SlangWord:                 * ");
+        System.out.println("5. Sửa SlangWord:                  * ");
+        System.out.println("0. Nhấn 0 để kết thúc chương trình:* ");
         int chon=word.nextInt();
         String pass=word.nextLine();
         if(chon==1) TimkiemSlangWord();
+        else if(chon==2) TimkiemDefinition();
+        else if(chon==3) Hienthilichsu();
+        else if (chon==4) ThemSlangWord();
+        else if (chon==5) SuaSlangWord();
         else
         {
             clearScreen();
