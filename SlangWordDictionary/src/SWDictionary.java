@@ -6,9 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import javax.lang.model.util.ElementScanner6;
+
 import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.BufferedWriter;
 
 public class SWDictionary
@@ -27,7 +31,7 @@ public class SWDictionary
     public static List<String> LichSuSlLangWord=new ArrayList();
     public static Scanner word= new Scanner(System.in);
 
-    public static void GetHistory()
+    public static void DocLichsu()
     {
         try
      {
@@ -48,7 +52,8 @@ public class SWDictionary
     }
     }
 
-    public static void GetData(){
+    //đọc dữ liệu
+    public static void Docfile(){
      try
      {
         File f=new File("./data/slang.txt");
@@ -74,6 +79,51 @@ public class SWDictionary
     }
     }
 
+    //ghi lịch sử
+    public static void Ghilichsu(){
+        try {
+            File f = new File("./data/lichsu.txt");
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (String temp:LichSuSlLangWord) {
+                bw.write(temp + "\n");
+            }
+            fw.close();
+            bw.close();
+        }
+        catch (Exception ex) {
+            System.out.println("Error: "+ex);
+        }
+    }
+
+    //ghi file
+    public static void Ghifile()
+    {
+        try {
+            File f = new File("./data/slang.txt");
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (String i: m.keySet())
+            {
+                fw.write(i +"`");
+                List<String> temp=m.get(i);
+                for (int t=0;t<temp.size();t++)
+                {
+                    fw.write(temp.get(t));
+                    if (t+1<temp.size()) fw.write("\\|");
+                }
+                fw.write("\n");
+            }
+            fw.close();
+            bw.close();
+        }
+        catch (Exception ex) {
+            System.out.println("Error: "+ex);
+        }
+    }
+
+
+
     //1.tìm kiếm Slang Word
     public static void TimkiemSlangWord()
     {
@@ -94,15 +144,14 @@ public class SWDictionary
         clearScreen();
         System.out.println("Nhập Definition bạn muốn tìm: ");
         String check=word.nextLine();
-        LichSuSlLangWord.add(check);
         List<String> answer=new ArrayList();
+        LichSuSlLangWord.add(check);
         for (String i: m.keySet())
         {
             if (m.get(i).contains(check))
             {
                 answer.add(i);
             }
-
         }
         System.out.println(answer);
         pauseScreen();
@@ -300,6 +349,7 @@ public class SWDictionary
 
         String word1=RandomSlangWord();
         String qword=word1;
+
         List<String> w1=m.get(word1);
         word1=w1.get(Rd.nextInt(w1.size()));
         String win=word1;
@@ -321,17 +371,20 @@ public class SWDictionary
         poll.add(word4);
 
 
-        System.out.println("Câu hỏi: tìm Definition cho " + qword);
+        System.out.println("Câu hỏi: tìm Definition cho: " + qword);
 
         word1=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word1);
         System.out.println("A.  " + word1);
+
         word2=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word2);
         System.out.println("B.  " + word2);
+
         word3=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word3);
         System.out.println("C.  " + word3);
+
         word4=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word4);
         System.out.println("D.  " + word4);
@@ -341,14 +394,18 @@ public class SWDictionary
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^.");
 
         if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
-        System.out.println("Chúc mừng bạn.");
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
         else if ((Chon.equals("B") || Chon.equals("b")) && word2==win) 
-        System.out.println("Chúc mừng bạn.");
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
         else if ((Chon.equals("C") || Chon.equals("c")) && word3==win) 
-        System.out.println("Chúc mừng bạn.");
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        
         else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
-        System.out.println("Chúc mừng bạn.");
-        else System.out.println("Sai rồi . Đáp án đúng là: " + win);
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
+        else System.out.println("SAI RỒI . Đáp án đúng là: " + win);
         pauseScreen();
         menu();
     }
@@ -357,92 +414,63 @@ public class SWDictionary
     public static void DovuiDefinition()
     {
         clearScreen();
-        Random rand = new Random();
+        Random Rd = new Random();
         List<String> poll=new ArrayList();
+
         String word1=RandomSlangWord();
         poll.add(word1);
+
         String word2=RandomSlangWord();
         poll.add(word2);
+
         String word3=RandomSlangWord();
         poll.add(word3);
+
         String word4=RandomSlangWord();
         poll.add(word4);
+
         List<String> qword=m.get(word1);
         String win=word1;
-        System.out.println("Câu hỏi: Tìm Slang Word cho " + qword.get(rand.nextInt(qword.size())));
-        word1=poll.get(rand.nextInt(poll.size()));
+        System.out.println("Câu hỏi: Tìm Slang Word cho: " + qword.get(Rd.nextInt(qword.size())));
+
+        word1=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word1);
         System.out.println("A.  " + word1);
-        word2=poll.get(rand.nextInt(poll.size()));
+
+        word2=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word2);
         System.out.println("B.  " + word2);
-        word3=poll.get(rand.nextInt(poll.size()));
+
+        word3=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word3);
         System.out.println("C.  " + word3);
-        word4=poll.get(rand.nextInt(poll.size()));
+
+        word4=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word4);
         System.out.println("D.  " + word4);
+
         System.out.println("Đáp án của bạn là: ");
         String Chon=word.nextLine();
+
         if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
-        System.out.println("Chúc mừng bạn.");
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
         else if ((Chon.equals("B") || Chon.equals("b")) && word2==win)
-         System.out.println("Chúc mừng bạn.");
+         System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
         else if ((Chon.equals("C") || Chon.equals("c")) && word3==win)
-         System.out.println("Chúc mừng bạn.");
+         System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
         else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
-        System.out.println("Chúc mừng bạn.");
-        else System.out.println("Sai rồi . Đáp án đúng là:  " + win);
+        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+
+        else System.out.println(">>>>>>SAI RỒI. Đáp án đúng là:  " + win);
         pauseScreen();
         menu();
     }
 
-    //Update Lịch Sử
-    public static void updateLLichSu(){
-        try {
-            File f = new File("./data/lichsu.txt");
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (String temp : LichSuSlLangWord) {
-                fw.write(temp + "\n");
-            }
-            fw.close();
-            bw.close();
-        }
-        catch (Exception ex) {
-            System.out.println("Error: "+ex);
-        }
-    }
 
-    //Update File
-    public static void updateFile()
-    {
-        try {
-            File f = new File("./data/slang.txt");
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (String i: m.keySet())
-            {
-                fw.write(i +"`");
-                List<String> temp=m.get(i);
-                for (int t=0;t<temp.size();t++)
-                {
-                    fw.write(temp.get(t));
-                    if (t+1<temp.size()) fw.write("|");
-                }
-                fw.write("\n");
-            }
-            fw.close();
-            bw.close();
-        }
-        catch (Exception ex) {
-            System.out.println("Error: "+ex);
-        }
-    }
-
-
-    
-
+     
 
     //menu
     public static void menu()
@@ -459,7 +487,6 @@ public class SWDictionary
         System.out.println("* 8. Random SlangWord:               *_* ");
         System.out.println("* 9. Đố vui SlangWord:               *_* ");
         System.out.println("* 10. Đố vui Definition:             *_* ");
-        System.out.println("* 11. Xóa lịch sử:                   *_*");
         System.out.println("* 0. Nhấn 0 để kết thúc chương trình:*_* ");
         System.out.println("--*--*--*--*--*--*--*--*--*--*--*--*--* ");
         int chon=word.nextInt();
@@ -484,25 +511,18 @@ public class SWDictionary
         }
         else if(chon==9) DovuiSlangWord();
         else if (chon==10) DovuiDefinition();
-        else if (chon==11)
+        else 
         {
             clearScreen();
-            System.out.println("Xóa lịch sử !");
-            LichSuSlLangWord.clear();
-            pauseScreen();
-            menu();
-        }
-        else
-        {
-            clearScreen();
-            updateLLichSu();
-            updateFile();
+            Ghifile();
+            Ghilichsu();
             System.exit(0);
         }
+       
     }
     public static void main(String[] args)  {
-        GetData();
-        GetHistory();
+        Docfile();
+        DocLichsu();
         menu();
     }
 }
