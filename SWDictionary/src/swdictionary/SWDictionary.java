@@ -1,4 +1,12 @@
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package swdictionary;
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
@@ -6,24 +14,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import javax.lang.model.util.ElementScanner6;
-
 import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.io.BufferedWriter;
+
+/**
+ *
+ * @author Minh-Quaa
+ */
 
 public class SWDictionary
 {
     public final static void clearScreen() {
-        System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
     public static void pauseScreen(){
-        System.out.println("Nhấn phím bất kỳ để tiếp tục...");
+        System.out.println("NHAN PHIM BAT KY DE TIEP TUC...");
         new java.util.Scanner(System.in).nextLine();
     }
 
@@ -31,6 +39,7 @@ public class SWDictionary
     public static List<String> LichSuSlLangWord=new ArrayList();
     public static Scanner word= new Scanner(System.in);
 
+    //DỌC LỊCH SỬ
     public static void DocLichsu()
     {
         try
@@ -52,7 +61,7 @@ public class SWDictionary
     }
     }
 
-    //đọc dữ liệu
+    //ĐỌC FILE
     public static void Docfile(){
      try
      {
@@ -79,7 +88,7 @@ public class SWDictionary
     }
     }
 
-    //ghi lịch sử
+    //GHI LỊCH SỬ
     public static void Ghilichsu(){
         try {
             File f = new File("./data/lichsu.txt");
@@ -96,7 +105,7 @@ public class SWDictionary
         }
     }
 
-    //ghi file
+    //GHI FILE
     public static void Ghifile()
     {
         try {
@@ -122,13 +131,11 @@ public class SWDictionary
         }
     }
 
-
-
-    //tìm kiếm Slang Word
+    //TÌM KIẾM Slang Word
     public static void TimkiemSlangWord()
     {
         clearScreen();
-        System.out.print("Nhập từ bạn muốn tìm: ");
+        System.out.print("NHAP TU BAN MUON TIM: ");
         String check=word.nextLine();
         check=check.toUpperCase();
         List<String> test=m.get(check);
@@ -138,11 +145,11 @@ public class SWDictionary
         menu();
     }
 
-    //tìm kiếm Definition
+    //TÌM KIẾM Definition
     public static void TimkiemDefinition()
     {
         clearScreen();
-        System.out.println("Nhập Definition bạn muốn tìm: ");
+        System.out.println("NHAP DEFINITION BAN MUON TIM: ");
         String check=word.nextLine();
         List<String> answer=new ArrayList();
         LichSuSlLangWord.add(check);
@@ -158,11 +165,11 @@ public class SWDictionary
         menu();
     }
 
-    //Tìm kiếm lich sử
+    //TÌM KIẾM LỊCH SỬ
     static void Timkiemlichsu()
     {
         clearScreen();
-        System.out.println("Lịch sử tìm kiếm: ");
+        System.out.println("LICH SU TIM KIEM: ");
         for (String temp: LichSuSlLangWord)
         {
             System.out.println(temp);
@@ -175,16 +182,16 @@ public class SWDictionary
     public static void ThemSlangWord()
     {
         clearScreen();
-        System.out.println("Nhập Slang Word mới để thêm: ");
+        System.out.println("NHAP SLANGWORD VAO: ");
         String check=word.nextLine();
         check=check.toUpperCase();
-        System.out.println("definition: ");
+        System.out.println("DEFINITION: ");
         String check1=word.nextLine();
         List<String> t=new ArrayList();
         t.add(check1);
         if (m.containsKey(check))
         {
-            System.out.println("Nhập 'O' hoặc 'o' để OVERWRITE. Nhấn phím bất kỳ để DUPLICATE: ");
+            System.out.println("NHAP 'O' HOAC 'o' DE OVERWRITE. NHAN PHIM BAT KY DUPLICATE: ");
             String confirm=word.nextLine();
             if (confirm.equals("O") || confirm.equals("o") ) m.put(check,t);
             else
@@ -200,7 +207,7 @@ public class SWDictionary
         else
         {
             m.put(check,t);
-            System.out.println("Thêm mới Slang Word thành công");
+            System.out.println("THEM MOI SLANGWORD THANH CONG");
         }
         menu();
     }
@@ -209,17 +216,17 @@ public class SWDictionary
     //Sửa SlangWord
     static void SuaSlangWord(){
         clearScreen();
-        System.out.print("Slangword bạn muốn sửa: ");
+        System.out.print("SLANGWORD BAN MUON SUA: ");
         String check=word.nextLine();
         check=check.toUpperCase();
         if (!m.containsKey(check))
         {
-            System.out.println("Slangword không tồn tại");
+            System.out.println("SLANGWORD KHONG TON TAI");
             pauseScreen();
             menu();
         }
         clearScreen();
-        System.out.println("definition: " );
+        System.out.println("DEFINITION: " );
 
         List<String> showCase=m.get(check);
         List<String> rshowCase=new ArrayList();
@@ -233,21 +240,21 @@ public class SWDictionary
             System.out.println(count+ "." + i);
             count++;
         }
-        System.out.println("Chọn từ bạn muốn thay đổi: ");
+        System.out.println("CHON TU BAN MUON SUA: ");
         int index=word.nextInt();
         clearScreen();
 
-        System.out.println("Vui lòng chọn: ");
-        System.out.println("1. ghi đè Definition ");
-        System.out.println("2. Xóa Definition ");
-        System.out.println("3. Thêm Definition ");
-        System.out.println("Tôi chọn:");
+        System.out.println("VUI LONG CHON: ");
+        System.out.println("1. GHI DE DEFINITION ");
+        System.out.println("2. XOA DEFINITION ");
+        System.out.println("3. THEM DEFINITION ");
+        System.out.println("TOI CHON:");
         int Chon=word.nextInt();
         String pass=word.nextLine();
         if (Chon==1) 
         {
             rshowCase.remove(index-1);
-            System.out.print("Definition mới: ");
+            System.out.print("DEFINITION MOI: ");
             String temp=word.nextLine();
             rshowCase.add(temp);
             m.put(check,rshowCase);
@@ -256,7 +263,7 @@ public class SWDictionary
         {
             if (rshowCase.size()==1) 
             {
-                System.out.println("Không thể xóa ");
+                System.out.println("KHONG THE XOA ");
                 pauseScreen();
                 menu();
             }
@@ -265,7 +272,7 @@ public class SWDictionary
         }
         else if (Chon==3)
         {
-            System.out.print("Definition mới: ");
+            System.out.print("DEFINITION MOI: ");
             String temp=word.nextLine();
             rshowCase.add(temp);
             m.put(check,rshowCase);
@@ -277,25 +284,23 @@ public class SWDictionary
     static void XoaSlangWord()
     {
         clearScreen();
-        System.out.println("Slangword muốn xóa: ");
+        System.out.println("SLANGWORD MUON XOA: ");
         String check=word.nextLine();
         if (m.containsKey(check))
         {
-            System.out.println("Vui lòng nhấn Y để xóa và nhấn phím khác để thoát. ");
+            System.out.println("VUI LONG NHAP 'Y' DE XOA VA NHAN PHIM BAT KY DE THOAT. ");
             String confirm=word.nextLine();
             if (confirm.equals("Y") || confirm.equals("y") ) m.remove(check);
             
         }
         else
         {
-            System.out.println("[DL Trống]");
+            System.out.println("[DL TRONG]");
         }
-    
-        pauseScreen();
         menu();
     }
 
-    //Reset về file gốc
+    //Reset vá»� file gá»‘c
     public static void Resetfilegoc()
     {
         clearScreen();
@@ -323,12 +328,12 @@ public class SWDictionary
     {
         System.out.println("ERROR"+ex);
     }
-        System.out.println("Reset về file gốc !!!");
+        System.out.println("RESET VE FILE GOC !!!");
         pauseScreen();
         menu();
     }
 
-    //SlangWord Ngẫu nhiên
+    //SlangWord ngẫu nhiên
     public static String RandomSlangWord(){
         clearScreen();
         int count=0;
@@ -377,7 +382,7 @@ public class SWDictionary
         poll.add(word4);
 
 
-        System.out.println("Câu hỏi: tìm Definition cho: " + qword);
+        System.out.println("CAU HOI: TIM DEFINITION CHO: " + qword);
 
         word1=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word1);
@@ -395,23 +400,23 @@ public class SWDictionary
         poll.remove(word4);
         System.out.println("D.  " + word4);
 
-        System.out.println("Đáp án của bạn là: ");
+        System.out.println("ĐAP AN CUA BAN LA: ");
         String Chon=word.nextLine();
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^.");
 
         if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
 
         else if ((Chon.equals("B") || Chon.equals("b")) && word2==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
 
         else if ((Chon.equals("C") || Chon.equals("c")) && word3==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
         
         else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
 
-        else System.out.println("SAI RỒI . Đáp án đúng là: " + win);
+        else System.out.println("SAI ROI . ĐAP AN ĐUNG LA : " + win);
         pauseScreen();
         menu();
     }
@@ -437,7 +442,7 @@ public class SWDictionary
 
         List<String> qword=m.get(word1);
         String win=word1;
-        System.out.println("Câu hỏi: Tìm Slang Word cho: " + qword.get(Rd.nextInt(qword.size())));
+        System.out.println("CAU HOI: TIM SLANG WORD CHO: " + qword.get(Rd.nextInt(qword.size())));
 
         word1=poll.get(Rd.nextInt(poll.size()));
         poll.remove(word1);
@@ -455,22 +460,22 @@ public class SWDictionary
         poll.remove(word4);
         System.out.println("D.  " + word4);
 
-        System.out.println("Đáp án của bạn là: ");
+        System.out.println("ĐAP AN CUA BAN LA : ");
         String Chon=word.nextLine();
 
         if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
 
         else if ((Chon.equals("B") || Chon.equals("b")) && word2==win)
-         System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+         System.out.println(">>>>>>CHUC MUNG BAN.");
 
         else if ((Chon.equals("C") || Chon.equals("c")) && word3==win)
-         System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+         System.out.println(">>>>>>CHUC MUNG BAN.");
 
         else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
-        System.out.println(">>>>>>CHÚC MỪNG BẠN.");
+        System.out.println(">>>>>>CHUC MUNG BAN.");
 
-        else System.out.println(">>>>>>SAI RỒI. Đáp án đúng là:  " + win);
+        else System.out.println(">>>>>>SAI ROI. ĐAP AN ĐUNG LA:  " + win);
         pauseScreen();
         menu();
     }
@@ -483,17 +488,17 @@ public class SWDictionary
     {
         clearScreen();
         System.out.println("_________________MENU___________________ ");
-        System.out.println("* 1. Tìm kiếm theo SlangWord:        *_* ");
-        System.out.println("* 2. Tìm kiếm theo Definition:       *_* ");
-        System.out.println("* 3. Lịch sử tìm kiếm:               *_* ");
-        System.out.println("* 4. Thêm SlangWord:                 *_* ");
-        System.out.println("* 5. Sửa SlangWord:                  *_* ");
-        System.out.println("* 6. Xóa SlangWord:                  *_* ");
-        System.out.println("* 7. Reset SlangWord gốc:            *_* ");
-        System.out.println("* 8. Random SlangWord:               *_* ");
-        System.out.println("* 9. Đố vui SlangWord:               *_* ");
-        System.out.println("* 10. Đố vui Definition:             *_* ");
-        System.out.println("* 0. Nhấn 0 để kết thúc chương trình:*_* ");
+        System.out.println("* 1. TIM KIEM THEO SLANGWORD:        *_* ");
+        System.out.println("* 2. TIM KIEM THEO DEFINITION :      *_* ");
+        System.out.println("* 3. LICH SU TIM KIEM:               *_* ");
+        System.out.println("* 4. THEM SLANGWORD:                 *_* ");
+        System.out.println("* 5. SUA SLANGWORD:                  *_* ");
+        System.out.println("* 6. XOA SLANGWORD:                  *_* ");
+        System.out.println("* 7. RESET SLANGWORD GOC:            *_* ");
+        System.out.println("* 8. RANDOM SLANGWORD:               *_* ");
+        System.out.println("* 9. DO VUI SLANGWORD:               *_* ");
+        System.out.println("* 10. DO VUI DEFINITION:             *_* ");
+        System.out.println("* 0. NHAP 0 DE KET THUC CHUONG TRINH:*_* ");
         System.out.println("--*--*--*--*--*--*--*--*--*--*--*--*--* ");
         int chon=word.nextInt();
         String pass=word.nextLine();
@@ -507,9 +512,9 @@ public class SWDictionary
         else if(chon==8) 
         {
             String randomSW=RandomSlangWord();
-            System.out.println("SlangWord là: ");
+            System.out.println("SLANG WORD LA : ");
             System.out.println(randomSW);
-            System.out.println("Deefinition là: ");
+            System.out.println("DEFINTION LA : ");
             List<String> t=m.get(randomSW);
             System.out.println(t);
             pauseScreen();
@@ -523,6 +528,7 @@ public class SWDictionary
             Ghifile();
             Ghilichsu();
             System.exit(0);
+         
         }
            
     }
@@ -533,3 +539,4 @@ public class SWDictionary
         menu();
     }
 }
+

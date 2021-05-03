@@ -1,4 +1,4 @@
-SLAG`Meaning
+Slag`Meaning
 #1`Number one
 $`Dollar| money
 $_$`Has money
@@ -184,7 +184,7 @@ $_$`Has money
 :-)`Smile
 :-*`Kiss
 :-D`Laughing| Big Smile
-:-P`Sticking heir Tongue Out
+:-P`Sticking Their Tongue Out
 :/`Sarcasm
 :0`Surprised| shocked
 :3`Cute| goofy face
@@ -5190,7 +5190,7 @@ PIPS`Easy| not difficult
 PIQ`Person In Question
 PIR`Parent In Room
 PISSED`Angry| Drunk
-PISSED OFF`Mad| angrPy
+PISSED OFF`Mad| angry
 PITCH`Contribute money
 PITME`Peace In the Middle East
 PITR`Parent In The Room
