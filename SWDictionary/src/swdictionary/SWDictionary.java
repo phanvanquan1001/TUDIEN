@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.IOException;
 
 /**
  *
@@ -35,8 +36,8 @@ public class SWDictionary
         new java.util.Scanner(System.in).nextLine();
     }
 
-    public static HashMap<String,List<String>> m=new HashMap<String,List<String>>();
-    public static List<String> LichSuSlLangWord=new ArrayList();
+    public static HashMap<String,List<String>> Hm=new HashMap<String,List<String>>();
+    public static List<String> LichSu=new ArrayList();
     public static Scanner word= new Scanner(System.in);
 
     //DỌC LỊCH SỬ
@@ -45,17 +46,17 @@ public class SWDictionary
         try
      {
         File f=new File("./data/lichsu.txt");
-        FileReader fr=new FileReader(f);
-        BufferedReader br=new BufferedReader(fr);
-        String line;
-        while((line=br.readLine())!=null)
-        {
-            LichSuSlLangWord.add(line);
-        }
-        fr.close();
+        BufferedReader br;
+            try (FileReader fr = new FileReader(f)) {
+                br = new BufferedReader(fr);
+                String line;
+                while((line=br.readLine())!=null)
+                {
+                    LichSu.add(line);
+                }   }
         br.close();
     }
-    catch (Exception ex)
+    catch (IOException ex)
     {
         System.out.println("ERROR"+ex);
     }
@@ -66,23 +67,23 @@ public class SWDictionary
      try
      {
         File f=new File("./data/slang.txt");
-        FileReader fr=new FileReader(f);
-        BufferedReader br=new BufferedReader(fr);
-        String line;
-        while((line=br.readLine())!=null)
-        {
-            if (line.contains("`"))
-            {
-                String[] s=line.split("`");
-                String[] tmp=s[1].split("\\|");
-                List<String> temp=Arrays.asList(tmp);
-                m.put(s[0],temp);
-            }
-        }
-        fr.close();
+        BufferedReader br;
+         try (FileReader fr = new FileReader(f)) {
+             br = new BufferedReader(fr);
+             String line;
+             while((line=br.readLine())!=null)
+             {
+                 if (line.contains("`"))
+                 {
+                     String[] s=line.split("`");
+                     String[] tmp=s[1].split("\\|");
+                     List<String> temp=Arrays.asList(tmp);
+                     Hm.put(s[0],temp);
+                 }
+             }}
         br.close();
     }
-    catch (Exception ex)
+    catch (IOException ex)
     {
         System.out.println("ERROR"+ex);
     }
@@ -92,15 +93,16 @@ public class SWDictionary
     public static void Ghilichsu(){
         try {
             File f = new File("./data/lichsu.txt");
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (String temp:LichSuSlLangWord) {
-                bw.write(temp + "\n");
+            BufferedWriter bw;
+            try (FileWriter fw = new FileWriter(f)) {
+                bw = new BufferedWriter(fw);
+                for (String temp:LichSu) {
+                    bw.write(temp + "\n");
+                }
             }
-            fw.close();
             bw.close();
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             System.out.println("Error: "+ex);
         }
     }
@@ -110,23 +112,24 @@ public class SWDictionary
     {
         try {
             File f = new File("./data/slang.txt");
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (String i: m.keySet())
-            {
-                fw.write(i +"`");
-                List<String> temp=m.get(i);
-                for (int t=0;t<temp.size();t++)
+            BufferedWriter bw;
+            try (FileWriter fw = new FileWriter(f)) {
+                bw = new BufferedWriter(fw);
+                for (String i: Hm.keySet())
                 {
-                    fw.write(temp.get(t));
-                    if (t+1<temp.size()) fw.write("\\|");
+                    fw.write(i +"`");
+                    List<String> temp=Hm.get(i);
+                    for (int t=0;t<temp.size();t++)
+                    {
+                        fw.write(temp.get(t));
+                        if (t+1<temp.size()) fw.write("\\|");
+                    }
+                    fw.write("\n");
                 }
-                fw.write("\n");
             }
-            fw.close();
             bw.close();
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             System.out.println("Error: "+ex);
         }
     }
@@ -138,8 +141,8 @@ public class SWDictionary
         System.out.print("NHAP TU BAN MUON TIM: ");
         String check=word.nextLine();
         check=check.toUpperCase();
-        List<String> test=m.get(check);
-        LichSuSlLangWord.add(check);
+        List<String> test=Hm.get(check);
+        LichSu.add(check);
         System.out.println(test);
         pauseScreen();
         menu();
@@ -152,28 +155,23 @@ public class SWDictionary
         System.out.println("NHAP DEFINITION BAN MUON TIM: ");
         String check=word.nextLine();
         List<String> answer=new ArrayList();
-        LichSuSlLangWord.add(check);
-        for (String i: m.keySet())
-        {
-            if (m.get(i).contains(check))
-            {
-                answer.add(i);
-            }
-        }
+        LichSu.add(check);
+        Hm.keySet().stream().filter((i) -> (Hm.get(i).contains(check))).forEachOrdered((i) -> {
+            answer.add(i);
+        });
         System.out.println(answer);
         pauseScreen();
         menu();
     }
 
-    //TÌM KIẾM LỊCH SỬ
-    static void Timkiemlichsu()
+    //LỊCH SỬ TÌM KIẾM
+    static void Lichsutimkiem()
     {
         clearScreen();
         System.out.println("LICH SU TIM KIEM: ");
-        for (String temp: LichSuSlLangWord)
-        {
+        LichSu.forEach((temp) -> {
             System.out.println(temp);
-        }
+        });
         pauseScreen();
         menu();
     }
@@ -189,24 +187,23 @@ public class SWDictionary
         String check1=word.nextLine();
         List<String> t=new ArrayList();
         t.add(check1);
-        if (m.containsKey(check))
+        if (Hm.containsKey(check))
         {
             System.out.println("NHAP 'O' HOAC 'o' DE OVERWRITE. NHAN PHIM BAT KY DUPLICATE: ");
             String confirm=word.nextLine();
-            if (confirm.equals("O") || confirm.equals("o") ) m.put(check,t);
+            if (confirm.equals("O") || confirm.equals("o") ) Hm.put(check,t);
             else
             {
-                List<String> i=m.get(check);
-                for (String j:i)
-                {
+                List<String> i=Hm.get(check);
+                i.forEach((j) -> {
                     t.add(j);
-                }
-                m.put(check,t);
+                });
+                Hm.put(check,t);
             }
         }
         else
         {
-            m.put(check,t);
+            Hm.put(check,t);
             System.out.println("THEM MOI SLANGWORD THANH CONG");
         }
         menu();
@@ -219,7 +216,7 @@ public class SWDictionary
         System.out.print("SLANGWORD BAN MUON SUA: ");
         String check=word.nextLine();
         check=check.toUpperCase();
-        if (!m.containsKey(check))
+        if (!Hm.containsKey(check))
         {
             System.out.println("SLANGWORD KHONG TON TAI");
             pauseScreen();
@@ -228,12 +225,11 @@ public class SWDictionary
         clearScreen();
         System.out.println("DEFINITION: " );
 
-        List<String> showCase=m.get(check);
+        List<String> showCase=Hm.get(check);
         List<String> rshowCase=new ArrayList();
-        for (String i:showCase)
-        {
+        showCase.forEach((i) -> {
             rshowCase.add(i);
-        }
+        });
         int count=1;
         for (String i: showCase)
         {
@@ -246,8 +242,7 @@ public class SWDictionary
 
         System.out.println("VUI LONG CHON: ");
         System.out.println("1. GHI DE DEFINITION ");
-        System.out.println("2. XOA DEFINITION ");
-        System.out.println("3. THEM DEFINITION ");
+        System.out.println("2. THEM DEFINITION ");
         System.out.println("TOI CHON:");
         int Chon=word.nextInt();
         String pass=word.nextLine();
@@ -257,25 +252,14 @@ public class SWDictionary
             System.out.print("DEFINITION MOI: ");
             String temp=word.nextLine();
             rshowCase.add(temp);
-            m.put(check,rshowCase);
+            Hm.put(check,rshowCase);
         }
         else if (Chon==2)
-        {
-            if (rshowCase.size()==1) 
-            {
-                System.out.println("KHONG THE XOA ");
-                pauseScreen();
-                menu();
-            }
-            rshowCase.remove(index-1);
-            m.put(check,rshowCase);
-        }
-        else if (Chon==3)
         {
             System.out.print("DEFINITION MOI: ");
             String temp=word.nextLine();
             rshowCase.add(temp);
-            m.put(check,rshowCase);
+            Hm.put(check,rshowCase);
         }
         menu();
     }
@@ -286,11 +270,11 @@ public class SWDictionary
         clearScreen();
         System.out.println("SLANGWORD MUON XOA: ");
         String check=word.nextLine();
-        if (m.containsKey(check))
+        if (Hm.containsKey(check))
         {
             System.out.println("VUI LONG NHAP 'Y' DE XOA VA NHAN PHIM BAT KY DE THOAT. ");
             String confirm=word.nextLine();
-            if (confirm.equals("Y") || confirm.equals("y") ) m.remove(check);
+            if (confirm.equals("Y") || confirm.equals("y") ) Hm.remove(check);
             
         }
         else
@@ -304,27 +288,27 @@ public class SWDictionary
     public static void Resetfilegoc()
     {
         clearScreen();
-        m.clear();
+        Hm.clear();
         try
      {
         File f=new File("./data/filegoc.txt");
-        FileReader fr=new FileReader(f);
-        BufferedReader br=new BufferedReader(fr);
-        String line;
-        while((line=br.readLine())!=null)
-        {
-            if (line.contains("`"))
-            {
-                String[] s=line.split("`");
-                String[] tmp=s[1].split("\\|");
-                List<String> temp=Arrays.asList(tmp);
-                m.put(s[0],temp);
-            }
-        }
-        fr.close();
+        BufferedReader br;
+            try (FileReader fr = new FileReader(f)) {
+                br = new BufferedReader(fr);
+                String line;
+                while((line=br.readLine())!=null)
+                {
+                    if (line.contains("`"))
+                    {
+                        String[] s=line.split("`");
+                        String[] tmp=s[1].split("\\|");
+                        List<String> temp=Arrays.asList(tmp);
+                        Hm.put(s[0],temp);
+                    }
+                }   }
         br.close();
     }
-    catch (Exception ex)
+    catch (IOException ex)
     {
         System.out.println("ERROR"+ex);
     }
@@ -338,11 +322,11 @@ public class SWDictionary
         clearScreen();
         int count=0;
         Random rd=new Random();
-        int magicNumber=rd.nextInt(m.size());
+        int ngaunhien=rd.nextInt(Hm.size());
         String ans="";
-        for (String i: m.keySet())
+        for (String i: Hm.keySet())
         {
-            if (count==magicNumber)
+            if (count==ngaunhien)
             {
                 ans=i;
                 break;
@@ -357,66 +341,52 @@ public class SWDictionary
         clearScreen();
         Random Rd = new Random();
         List<String> poll=new ArrayList();
-
-        String word1=RandomSlangWord();
-        String qword=word1;
-
-        List<String> w1=m.get(word1);
-        word1=w1.get(Rd.nextInt(w1.size()));
-        String win=word1;
-        poll.add(word1);
-
-        String word2=RandomSlangWord();
-        List<String> w2=m.get(word2);
-        word2=w2.get(Rd.nextInt(w2.size()));
-        poll.add(word2);
-
-        String word3=RandomSlangWord();
-        List<String> w3=m.get(word3);
-        word3=w3.get(Rd.nextInt(w3.size()));
-        poll.add(word3);
-
-        String word4=RandomSlangWord();
-        List<String> w4=m.get(word4);
-        word4=w4.get(Rd.nextInt(w4.size()));
-        poll.add(word4);
+        String SL1=RandomSlangWord();
+        String CH=SL1;
+        List<String> S1=Hm.get(SL1);
+        SL1=S1.get(Rd.nextInt(S1.size()));
+        String win=SL1;
+        poll.add(SL1);
+        String SL2=RandomSlangWord();
+        List<String> S2=Hm.get(SL2);
+        SL2=S2.get(Rd.nextInt(S2.size()));
+        poll.add(SL2);
+        String SL3=RandomSlangWord();
+        List<String> S3=Hm.get(SL3);
+        SL3=S3.get(Rd.nextInt(S3.size()));
+        poll.add(SL3);
+        String SL4=RandomSlangWord();
+        List<String> S4=Hm.get(SL4);
+        SL4=S4.get(Rd.nextInt(S4.size()));
+        poll.add(SL4);
 
 
-        System.out.println("CAU HOI: TIM DEFINITION CHO: " + qword);
-
-        word1=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word1);
-        System.out.println("A.  " + word1);
-
-        word2=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word2);
-        System.out.println("B.  " + word2);
-
-        word3=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word3);
-        System.out.println("C.  " + word3);
-
-        word4=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word4);
-        System.out.println("D.  " + word4);
-
-        System.out.println("ĐAP AN CUA BAN LA: ");
+        System.out.println("CAU HOI: TIM DEFINITION CHO: " + CH);
+        SL1=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(SL1);
+        System.out.println("A.  " + SL1);
+        SL2=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(SL2);
+        System.out.println("B.  " + SL2);
+        SL3=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(SL3);
+        System.out.println("C.  " + SL3);
+        SL4=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(SL4);
+        System.out.println("D.  " + SL4);
+        System.out.println("DAP AN CUA BAN LA: ");
         String Chon=word.nextLine();
         System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^.");
 
-        if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
+        if ( (Chon.equals("A") || Chon.equals("a")) && SL1==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else if ((Chon.equals("B") || Chon.equals("b")) && word2==win) 
+        else if ((Chon.equals("B") || Chon.equals("b")) && SL2==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else if ((Chon.equals("C") || Chon.equals("c")) && word3==win) 
+        else if ((Chon.equals("C") || Chon.equals("c")) && SL3==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-        
-        else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
+        else if ((Chon.equals("D") || Chon.equals("d")) && SL4==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else System.out.println("SAI ROI . ĐAP AN ĐUNG LA : " + win);
+        else System.out.println("SAI ROI . DAP AN DUNG LA : " + win);
         pauseScreen();
         menu();
     }
@@ -427,61 +397,44 @@ public class SWDictionary
         clearScreen();
         Random Rd = new Random();
         List<String> poll=new ArrayList();
-
-        String word1=RandomSlangWord();
-        poll.add(word1);
-
-        String word2=RandomSlangWord();
-        poll.add(word2);
-
-        String word3=RandomSlangWord();
-        poll.add(word3);
-
-        String word4=RandomSlangWord();
-        poll.add(word4);
-
-        List<String> qword=m.get(word1);
-        String win=word1;
-        System.out.println("CAU HOI: TIM SLANG WORD CHO: " + qword.get(Rd.nextInt(qword.size())));
-
-        word1=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word1);
-        System.out.println("A.  " + word1);
-
-        word2=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word2);
-        System.out.println("B.  " + word2);
-
-        word3=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word3);
-        System.out.println("C.  " + word3);
-
-        word4=poll.get(Rd.nextInt(poll.size()));
-        poll.remove(word4);
-        System.out.println("D.  " + word4);
-
-        System.out.println("ĐAP AN CUA BAN LA : ");
+        String DF1=RandomSlangWord();
+        poll.add(DF1);
+        String DF2=RandomSlangWord();
+        poll.add(DF2);
+        String DF3=RandomSlangWord();
+        poll.add(DF3);
+        String DF4=RandomSlangWord();
+        poll.add(DF4);
+        List<String> CH=Hm.get(DF1);
+        String win=DF1;
+        System.out.println("CAU HOI: TIM SLANG WORD CHO: " + CH.get(Rd.nextInt(CH.size())));
+        DF1=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(DF1);
+        System.out.println("A.  " + DF1);
+        DF2=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(DF2);
+        System.out.println("B.  " + DF2);
+        DF3=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(DF3);
+        System.out.println("C.  " + DF3);
+        DF4=poll.get(Rd.nextInt(poll.size()));
+        poll.remove(DF4);
+        System.out.println("D.  " + DF4);
+        System.out.println("DAP AN CUA BAN LA : ");
         String Chon=word.nextLine();
-
-        if ( (Chon.equals("A") || Chon.equals("a")) && word1==win) 
+        if ( (Chon.equals("A") || Chon.equals("a")) && DF1==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else if ((Chon.equals("B") || Chon.equals("b")) && word2==win)
+        else if ((Chon.equals("B") || Chon.equals("b")) && DF2==win)
          System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else if ((Chon.equals("C") || Chon.equals("c")) && word3==win)
+        else if ((Chon.equals("C") || Chon.equals("c")) && DF3==win)
          System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else if ((Chon.equals("D") || Chon.equals("d")) && word4==win) 
+        else if ((Chon.equals("D") || Chon.equals("d")) && DF4==win) 
         System.out.println(">>>>>>CHUC MUNG BAN.");
-
-        else System.out.println(">>>>>>SAI ROI. ĐAP AN ĐUNG LA:  " + win);
+        else System.out.println(">>>>>>SAI ROI. DAP AN DUNG LA:  " + win);
         pauseScreen();
         menu();
     }
 
-
-     
 
     //menu
     public static void menu()
@@ -497,38 +450,52 @@ public class SWDictionary
         System.out.println("* 7. RESET SLANGWORD GOC:            *_* ");
         System.out.println("* 8. RANDOM SLANGWORD:               *_* ");
         System.out.println("* 9. DO VUI SLANGWORD:               *_* ");
-        System.out.println("* 10. DO VUI DEFINITION:             *_* ");
+        System.out.println("* 10.DO VUI DEFINITION:              *_* ");
         System.out.println("* 0. NHAP 0 DE KET THUC CHUONG TRINH:*_* ");
         System.out.println("--*--*--*--*--*--*--*--*--*--*--*--*--* ");
         int chon=word.nextInt();
         String pass=word.nextLine();
-        if(chon==1) TimkiemSlangWord();
-        else if(chon==2) TimkiemDefinition();
-        else if(chon==3) Timkiemlichsu();
-        else if (chon==4) ThemSlangWord();
-        else if (chon==5) SuaSlangWord();
-        else if(chon==6) XoaSlangWord();
-        else if (chon==7) Resetfilegoc();
-        else if(chon==8) 
-        {
-            String randomSW=RandomSlangWord();
-            System.out.println("SLANG WORD LA : ");
-            System.out.println(randomSW);
-            System.out.println("DEFINTION LA : ");
-            List<String> t=m.get(randomSW);
-            System.out.println(t);
-            pauseScreen();
-            menu();
-        }
-        else if(chon==9) DovuiSlangWord();
-        else if (chon==10) DovuiDefinition();
-        else 
-        {
-            clearScreen();
-            Ghifile();
-            Ghilichsu();
-            System.exit(0);
-         
+        switch (chon) {
+            case 1:
+                TimkiemSlangWord();
+                break;
+            case 2:
+                TimkiemDefinition();
+                break;
+            case 3:
+                Lichsutimkiem();
+                break;
+            case 4:
+                ThemSlangWord();
+                break;
+            case 5:
+                SuaSlangWord();
+                break;
+            case 6:
+                XoaSlangWord();
+                break;
+            case 7:
+                Resetfilegoc();
+                break;
+            case 8:
+                String randomSW=RandomSlangWord();
+                System.out.println("SLANG WORD LA : "+ randomSW);
+                List<String> t=Hm.get(randomSW);
+                System.out.println("DEFINTION LA : " + t);
+                pauseScreen();
+                menu();
+                break;
+            case 9:
+                DovuiSlangWord();
+                break;
+            case 10:
+                DovuiDefinition();
+                break;
+            default:
+                clearScreen();
+                Ghifile();
+                Ghilichsu();
+                System.exit(0);
         }
            
     }
