@@ -143,7 +143,7 @@ public class SWDictionary
         check=check.toUpperCase();
         List<String> test=Hm.get(check);
         LichSu.add(check);
-        System.out.println(test);
+        System.out.println("Definition: "+test);
         pauseScreen();
         menu();
     }
@@ -152,14 +152,14 @@ public class SWDictionary
     public static void TimkiemDefinition()
     {
         clearScreen();
-        System.out.println("NHAP DEFINITION BAN MUON TIM: ");
+       System.out.print("NHAP TU BAN MUON TIM: ");
         String check=word.nextLine();
         List<String> answer=new ArrayList();
         LichSu.add(check);
         Hm.keySet().stream().filter((i) -> (Hm.get(i).contains(check))).forEachOrdered((i) -> {
             answer.add(i);
         });
-        System.out.println(answer);
+        System.out.println("SlangWord: "+answer);
         pauseScreen();
         menu();
     }
@@ -312,7 +312,7 @@ public class SWDictionary
     {
         System.out.println("ERROR"+ex);
     }
-        System.out.println("RESET VE FILE GOC !!!");
+        System.out.println("DA RESET VE FILE GOC !!!");
         pauseScreen();
         menu();
     }
